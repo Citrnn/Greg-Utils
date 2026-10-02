@@ -1,9 +1,8 @@
 package lei.greg.mixin;
 
-import lei.greg.events.RaidChallengeCompletedEvent;
-import lei.greg.events.TnaTreeEntered;
-import lei.greg.events.TnaTreeGrottoEntered;
-import lei.greg.events.TnaTreeIsopteraKilled;
+import lei.greg.GregUtils;
+import RandomUtils.Debouncer;
+import lei.greg.events.*;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,15 +17,16 @@ import java.util.regex.Pattern;
 // listens to chat and fires events associated to some messages
 @Mixin(ClientPlayNetworkHandler.class)
 public class MessageHandlerMixin {
-
-    @Unique private static final long DEDUPE_WINDOW_MS = 500;
-
     @Unique private static final Pattern GROTTO_PATTERN = Pattern.compile("(.+) has entered the (.+) Grotto");
     @Unique private static final Pattern TREE_PATTERN = Pattern.compile("§5The Interdimensional Isoptera is in the (.+) Grotto");
 
     @Unique private final Debouncer grottoDebounce = new Debouncer();
     @Unique private final Debouncer treeDebounce = new Debouncer();
     @Unique private final Debouncer isoDebounce = new Debouncer();
+
+    @Unique private final Debouncer tnaBossDebounce = new Debouncer();
+
+    @Unique private final Debouncer raidFinishedDebounce = new Debouncer();
 
     @Inject(method = "onGameMessage", at = @At("HEAD"))
     private void onGameMessage(GameMessageS2CPacket packet, CallbackInfo ci) {
@@ -42,6 +42,15 @@ public class MessageHandlerMixin {
             return;
         }
 
+        //TODO: make them more precise or whatever idk man im fucking tired of ts
+        if (content.contains("Raid Completed!")  && raidFinishedDebounce.canFire()){
+            RaidFinishedEvent.Companion.getEVENT().invoker().onChatMessage();
+        }
+
+        if (content.contains("Doomed to mutation, desolation, darkness, and despair")  && tnaBossDebounce.canFire()){
+            TnaBossEntered.Companion.getEVENT().invoker().onChatMessage();
+        }
+
         Matcher grottoMatcher = GROTTO_PATTERN.matcher(content);
         if (grottoMatcher.matches() && grottoDebounce.canFire()) {
             TnaTreeGrottoEntered.Companion.getEVENT().invoker()
@@ -54,17 +63,4 @@ public class MessageHandlerMixin {
             TnaTreeEntered.Companion.getEVENT().invoker().onChatMessage(treeMatcher.group(1));
         }
     }
-
-    // cooldown goober because wynncraft is weird and sends everything like 4 times
-    @Unique
-    private static final class Debouncer {
-        private long last = 0;
-        boolean canFire() {
-            long now = System.currentTimeMillis();
-            if (now - last <= DEDUPE_WINDOW_MS) return false;
-            last = now;
-            return true;
-        }
-    }
-
 }

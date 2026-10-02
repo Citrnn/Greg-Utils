@@ -3,6 +3,7 @@ package lei.greg
 import lei.greg.config.ConfigManager
 import lei.greg.features.DiscordChat
 import lei.greg.features.TreeHelper
+import lei.greg.features.WatchedVisualiser
 import lei.greg.highlights.Highlights
 import lei.greg.utils.Scheduler
 import net.fabricmc.api.ModInitializer
@@ -32,5 +33,6 @@ object GregUtils : ModInitializer {
 		// features
 		TreeHelper.register()
 		DiscordChat.register()
+		WatchedVisualiser.register()
 	}
 }
