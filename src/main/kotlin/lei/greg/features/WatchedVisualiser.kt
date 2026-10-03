@@ -50,13 +50,13 @@ object WatchedVisualiser {
         }
 
         TnaBossEntered.EVENT.register {
-            notifyChat("Entered boss")
+//            notifyChat("Entered boss")
             cleanup()
             isInGreg = true
         }
 
         RaidFinishedEvent.EVENT.register {
-            notifyChat("Raid finished")
+//            notifyChat("Raid finished")
             cleanup()
             isInGreg = false
         }
