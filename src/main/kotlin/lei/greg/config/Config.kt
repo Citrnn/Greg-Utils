@@ -31,6 +31,10 @@ private val defaults: Map<String, *> = mapOf(
     "fkl password" to "",
     "raid pings" to true,
     "bridge chat" to true,
+
+    "watched visualiser" to false,
+    "watched chat" to false,
+    "watched title" to true,
 )
 
 
@@ -59,6 +63,13 @@ object ScreenEntries {
         SettingEntry("field", "FKL Bridge Password", "Your personal FKL password \nrequest with \"f!resetPassword\"", "fkl password", "Random"),
         SettingEntry("bool", "Raid Pings", "whether to show raid pings \nfrom discord", "raid pings", "Random"),
         SettingEntry("bool", "Show Chat", "whether to display messages \nfrom discord chats", "bridge chat", "Random"),
+
+        // boss
+        // i wanted to make this a dropdown with "none, chat, title, both" but im scawed
+        SettingEntry("bool", "Watched visualiser", "Should watched sounds be \ndisplayed as visual cue?", "watched visualiser", "Gregory Bossfight"),
+        SettingEntry("bool", "Watched in chat", "Should you get watched\nmessages for each watched beam?", "watched chat", "Gregory Bossfight"),
+        SettingEntry("bool", "Watched visualiser", "Should you get big watched \ntitles in the middle of your \nscreen for each beam?", "watched title", "Gregory Bossfight"),
+
     )
 }
 

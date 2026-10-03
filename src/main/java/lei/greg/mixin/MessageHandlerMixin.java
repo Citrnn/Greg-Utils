@@ -64,3 +64,10 @@ public class MessageHandlerMixin {
         }
     }
 }
+// this is what gets shat out in console for the two messages but exact match doesnt wanna work
+
+//[14:46:50] [Render thread/INFO]: [CHAT/INFO] &7&oDoomed to mutation, desolation, darkness, and despair...from that which bears no name.
+//[14:46:50] [Render thread/INFO]: [System] [CHAT] Â§7Â§oDoomed to mutation, desolation, darkness, and despair...from that which bears no name.
+
+//[14:51:38] [Render thread/INFO]: [CHAT/INFO] &{fr:minecraft:space}ó­&6&lRaid Completed!
+//[14:51:38] [Render thread/INFO]: [System] [CHAT] Â§7ó­Raid Completed!
