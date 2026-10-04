@@ -3,7 +3,6 @@ package lei.greg.mixin;
 import RandomUtils.Debouncer;
 import lei.greg.events.*;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.sound.Sound;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -26,20 +25,20 @@ public class SoundHandlerMixin {
 
         if (soundId.toString().equals("minecraft:entity.evoker.prepare_summon") && watchedBeamDebounce.canFire()){
             if (checkPitch(pitch, 1.0f)){
-                TnaWatchedBeam.Companion.getEVENT().invoker().onChatMessage(1);
+                TnaWatchedBeam.Companion.getEVENT().invoker().onBeam(1);
             }
             else if (checkPitch(pitch, 1.5f)){
-                TnaWatchedBeam.Companion.getEVENT().invoker().onChatMessage(2);
+                TnaWatchedBeam.Companion.getEVENT().invoker().onBeam(2);
             }
         }
         if(soundId.toString().equals("minecraft:item.trident.thunder") && watchedBeamDebounce.canFire()){
-            if (checkPitch(pitch, 0.8f)) { // otherwise it just doesnt work!
-                TnaWatchedBeam.Companion.getEVENT().invoker().onChatMessage(3);
+            if (checkPitch(pitch, 0.8f)) {
+                TnaWatchedBeam.Companion.getEVENT().invoker().onBeam(3);
             }
         }
     }
 
-
+    // maybe this wouldnt be needed if i used doubles everywhere i think but i like the word float so ill keep using it
     private boolean checkPitch(float pitch, float value){
         return Math.abs(pitch - value) < 0.01f;
     }

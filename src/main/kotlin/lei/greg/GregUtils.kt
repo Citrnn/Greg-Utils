@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory
 
 object GregUtils : ModInitializer {
 	const val MOD_ID: String = "greg-utils"
-	val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
+	@JvmField
+    val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
 	fun id(path: String): Identifier { return Identifier.of(MOD_ID, path) }
 
 	val PLAYER_UUID: String by lazy {

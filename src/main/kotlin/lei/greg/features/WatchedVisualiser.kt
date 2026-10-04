@@ -6,12 +6,15 @@ import lei.greg.config.ConfigManager
 import lei.greg.events.RaidFinishedEvent
 import lei.greg.events.TnaBossEntered
 import lei.greg.events.TnaWatchedBeam
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents
 
 object WatchedVisualiser {
     var isInGreg: Boolean = false
-    var beamCounter: Int = 0
 
     fun register() {
+        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register { _, _ ->
+            cleanup()
+        }
 
         TnaWatchedBeam.EVENT.register { beamNr ->
             if(!isInGreg) return@register
@@ -38,7 +41,11 @@ object WatchedVisualiser {
 
         RaidFinishedEvent.EVENT.register {
 //            notifyChat("Raid finished")
-            isInGreg = false
+            cleanup()
         }
+    }
+
+    private fun cleanup(){
+        isInGreg = false
     }
 }

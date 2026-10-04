@@ -42,12 +42,10 @@ public class MessageHandlerMixin {
             return;
         }
 
-        //TODO: make them more precise or whatever idk man im fucking tired of ts
-        if (content.contains("Raid Completed!")  && raidFinishedDebounce.canFire()){
+        if (content.equals("§7\uDB00\uDC6DRaid Completed!")  && raidFinishedDebounce.canFire()){
             RaidFinishedEvent.Companion.getEVENT().invoker().onChatMessage();
         }
-
-        if (content.contains("Doomed to mutation, desolation, darkness, and despair")  && tnaBossDebounce.canFire()){
+        if (content.equals("§7§oDoomed to mutation, desolation, darkness, and despair...from that which bears no name.")  && tnaBossDebounce.canFire()){
             TnaBossEntered.Companion.getEVENT().invoker().onChatMessage();
         }
 
@@ -63,11 +61,20 @@ public class MessageHandlerMixin {
             TnaTreeEntered.Companion.getEVENT().invoker().onChatMessage(treeMatcher.group(1));
         }
     }
+
+    /// use this to get the actual usable string that u can slap in .equals and it just works
+    /// note that you might (will) have to remove duplicated backslashes because when pasting
+    /// in quotes intellij turns \ into \\
+    /// also if intellij suggests it you can replace the mental illnesses with "normal"
+    /// characters like §
+    private String getActualMessage(String message) {
+        StringBuilder actualMessage = new StringBuilder();
+        for (char character : message.toCharArray()){
+            if (character >= 0x20 && character <= 0x7e) // normal characters
+                actualMessage.append(character);
+            else
+                actualMessage.append(String.format("\\u%04x", (int) character)); // mental illnesses
+        }
+        return actualMessage.toString();
+    }
 }
-// this is what gets shat out in console for the two messages but exact match doesnt wanna work
-
-//[14:46:50] [Render thread/INFO]: [CHAT/INFO] &7&oDoomed to mutation, desolation, darkness, and despair...from that which bears no name.
-//[14:46:50] [Render thread/INFO]: [System] [CHAT] Â§7Â§oDoomed to mutation, desolation, darkness, and despair...from that which bears no name.
-
-//[14:51:38] [Render thread/INFO]: [CHAT/INFO] &{fr:minecraft:space}ó­&6&lRaid Completed!
-//[14:51:38] [Render thread/INFO]: [System] [CHAT] Â§7ó­Raid Completed!
